@@ -1,0 +1,53 @@
+<head>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+  <script src="/js/plot.js"></script>
+</head>
+<body style="margin-left: 30px;">
+  <h1>Titanic survival data by age, fare and gender</h1>
+  <div id="chartContainer">
+  </div>
+  <div style="margin-top: 20px;">
+      <!-- TODO: make this is a slider so it's more interactive -->
+      <!-- TODO: make this prettier, move style information into stylesheet -->
+	  <span style="font-weight: bold;">Explore a subset of the data:</span>
+	  <div>
+  	  	<div style="width: 50px; float: left;">Age:</div>
+  	  	<div><input type="text" style="width: 30px;" value="0" id="minAge"> to <input type="text" style="width: 30px;" value="80" id="maxAge"></div>
+  	  </div>
+  	  <div>
+	    <div style="width: 50px; float: left;">Fare:</div>
+	    <div><input type="text" style="width: 30px;" value="0" id="minFare"> to <input type="text" style="width: 30px;" value="550" id="maxFare"></div>
+  	  </div>
+  	  <div>
+  	    <button onclick="drawPlot(document.getElementById('minAge').value, document.getElementById('maxAge').value, document.getElementById('minFare').value, document.getElementById('maxFare').value);">Update Plot</button>
+  	  </div>
+  </div>
+  <script type="text/javascript">
+    function drawPlot(minAge, maxAge, minFare, maxFare) {
+    	d3.selectAll("#chartContainer").html("");
+	    var svg = dimple.newSvg("#chartContainer", 1000, 650);
+	    d3.csv("/data/passengers.csv", function (data) {
+	      newData = data.filter(function(p) { return p.Age != ''; })
+	                    .filter(function(p) { return !minAge  || p.Age  >= minAge} )
+	                    .filter(function(p) { return !maxAge  || p.Age  <= maxAge} )
+	                    .filter(function(p) { return !minFare || p.Fare >= minFare} )
+	                    .filter(function(p) { return !maxFare || p.Fare <= maxFare} );
+	      newData.forEach(function(p) {
+	      	p.Survived = p.Survived == 1 ? 'Survived' : 'Perished';
+	      });
+
+	      var myChart = new dimple.chart(svg, newData);
+	      myChart.setBounds(65, 30, 900, 600)
+	      var xAxis = myChart.addMeasureAxis("x", "Age");
+	      xAxis.overrideMin = minAge;
+	      var yAxis = myChart.addMeasureAxis("y", "Fare");
+	      yAxis.overrideMin = minFare;
+	      myChart.addSeries(["Name", "Age", "Fare", "Sex", "Survived"], dimple.plot.titanic);
+	      myChart.addLegend(60, 10, 510, 20, "right");
+	      myChart.draw();
+	    });
+	}
+	drawPlot(0, 0, 0, 0);
+  </script>
+ </body>
