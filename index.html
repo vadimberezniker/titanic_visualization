@@ -20,7 +20,7 @@
 	    <div><input type="text" style="width: 30px;" value="0" id="minFare"> to <input type="text" style="width: 30px;" value="550" id="maxFare"></div>
   	  </div>
   	  <div>
-  	    <button onclick="drawPlot(document.getElementById('minAge').value, document.getElementById('maxAge').value, document.getElementById('minFare').value, document.getElementById('maxFare').value);">Update Plot</button>
+  	    <button onclick="drawPlot(parseFloat(document.getElementById('minAge').value), parseFloat(document.getElementById('maxAge').value), parseFloat(document.getElementById('minFare').value), parseFloat(document.getElementById('maxFare').value));">Update Plot</button>
   	  </div>
   </div>
   <script type="text/javascript">
