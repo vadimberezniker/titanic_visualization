@@ -1,6 +1,6 @@
 // Custom plot function for Titanic survivors data set based on the 'dimple.plot.bubble'
 // function from dimple.js
-// This is a horrible hacky way customizing dimplejs, it would have been better done by
+// This is a horrible hacky way of customizing dimplejs, it would have been better done by
 // using d3 directly.
 // TODO: rewrite in d3
 
